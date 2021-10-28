@@ -50,7 +50,7 @@ class MeanFaceMask:
 
 
 def get_landmarks(output_size=(200, 200)):
-    mean_face_landmarks = utils.read_points('standard_human_face')
+    mean_face_landmarks = utils.read_points('standard_human_face.txt')
     mean_face_landmarks = mean_face_landmarks[:, :2]
     mean_face_landmarks[:, 1] = 0 - mean_face_landmarks[:, 1]
     # use eye_distance to normalize

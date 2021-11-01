@@ -11,11 +11,6 @@ import utils
 
 class MeanFaceMask:
     def __init__(self, face_landmarks, mean_mask_landmarks, output_size=(200, 200)):
-        '''
-        :param face_landmarks:
-        :param mean_mask_landmarks:
-        :param masks: list of mask_dict
-        '''
         self.output_size = output_size
         self.face_landmarks = face_landmarks
         self.mean_mask_landmarks = mean_mask_landmarks
@@ -50,7 +45,7 @@ class MeanFaceMask:
 
 
 def get_landmarks(output_size=(200, 200)):
-    mean_face_landmarks = utils.read_points('standard_human_face.txt')
+    mean_face_landmarks = utils.read_points('dataset/standard_human_face.txt')
     mean_face_landmarks = mean_face_landmarks[:, :2]
     mean_face_landmarks[:, 1] = 0 - mean_face_landmarks[:, 1]
     # use eye_distance to normalize
@@ -86,10 +81,10 @@ for x, y in zip(xs, ys):
 # ]
 face_landmarks = get_landmarks()
 mean_face_masks = MeanFaceMask(face_landmarks, mean_mask_landmarks_ls[2])
-base_path = 'masks'
-for i in range(1, 6):
+base_path = 'dataset/masks'
+for i in range(1, 5):
     path = os.path.join(base_path, '{}_json'.format(i))
-    mean_face_masks.add_mask('{}/img.png'.format(path), '{}/label.png'.format(path), '{}/{}.json'.format(base_path, i))
+    mean_face_masks.add_mask('{}/img.png'.format(path), '{}/label.png'.format(path), '{}/{}.json'.format(path, i))
 # face_landmarks, random_image, random_mask = mean_face_masks.get()
 # plt.xlim(0, 200)
 # plt.ylim(0, 200)

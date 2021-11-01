@@ -55,10 +55,11 @@ def wear_mask(landmarks, rect, input_path, output_size=(200, 200), output_base_p
 
 
 def extract():
-    index_file_path = 'WFLW_annotations/list_98pt_rect_attr_train_test/list_98pt_rect_attr_train.txt'
-    image_base_path = 'WFLW_images'
+    # index_file_path = 'dataset/WFLW_annotations/list_98pt_rect_attr_train_test/list_98pt_rect_attr_train.txt'
+    index_file_path = 'dataset/WFLW_annotations/list_98pt_rect_attr_train_test/list_98pt_rect_attr_test.txt'
+    image_base_path = 'dataset/WFLW_images'
     target_point_indices = [60, 64, 68, 72, 54, 76, 82, 79, 85]
-    output_base_path = 'wrong'
+    output_base_path = 'dataset/test/wrong'
     if not os.path.exists(output_base_path):
         os.makedirs(output_base_path)
     with open(index_file_path) as f:
@@ -88,24 +89,43 @@ def extract():
     return points_all, rect_all, image_path_all
 
 
+def partition_test():
+    right_path, wrong_path = 'dataset/test/right', 'dataset/test/wrong'
+    test_path = 'dataset/test_anno.txt'
+    test_lines = []
+
+    fns = os.listdir(right_path)
+    for fn in fns:
+        test_lines.append('{} {}\n'.format("{}/{}".format(right_path, fn), 0))
+
+    fns = os.listdir(wrong_path)
+    for fn in fns:
+        test_lines.append('{} {}\n'.format("{}/{}".format(wrong_path, fn), 1))
+
+    random.shuffle(test_lines)
+
+    with open(test_path, 'w') as f:
+        f.writelines(test_lines)
+
+
 def partition():
-    right_path, wrong_path = 'right', 'wrong'
-    train_path, validation_path = 'train_anno', 'validation_anno'
+    right_path, wrong_path = 'dataset/right', 'dataset/wrong'
+    train_path, validation_path = 'dataset/train_anno.txt', 'dataset/validation_anno.txt'
     train_lines, val_lines = [], []
 
     fns = os.listdir(right_path)
     fns_train, fns_val = fns[:int(len(fns)*0.7)], fns[int(len(fns)*0.7):]
     for fn in fns_train:
-        train_lines.append('{} {}\n'.format(os.path.join(right_path, fn), 0))
+        train_lines.append('{} {}\n'.format("{}/{}".format(right_path, fn), 0))
     for fn in fns_val:
-        val_lines.append('{} {}\n'.format(os.path.join(right_path, fn), 0))
+        val_lines.append('{} {}\n'.format("{}/{}".format(right_path, fn), 0))
 
     fns = os.listdir(wrong_path)
     fns_train, fns_val = fns[:int(len(fns)*0.7)], fns[int(len(fns)*0.7):]
     for fn in fns_train:
-        train_lines.append('{} {}\n'.format(os.path.join(wrong_path, fn), 1))
+        train_lines.append('{} {}\n'.format("{}/{}".format(wrong_path, fn), 1))
     for fn in fns_val:
-        val_lines.append('{} {}\n'.format(os.path.join(wrong_path, fn), 1))
+        val_lines.append('{} {}\n'.format("{}/{}".format(wrong_path, fn), 1))
 
     random.shuffle(train_lines)
     random.shuffle(val_lines)
@@ -115,6 +135,8 @@ def partition():
     with open(validation_path, 'w') as f:
         f.writelines(val_lines)
 
+
 if __name__ == '__main__':
     # extract()
-    partition()
+    # partition()
+    partition_test()

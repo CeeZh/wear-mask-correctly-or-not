@@ -13,7 +13,6 @@ def get_trm(cfg, is_train=True):
             T.Resize(cfg.data.image_size),
             T.RandomHorizontalFlip(p=cfg.data.flip_prob),
             T.ToTensor(),
-            T.Normalize(mean=0, std=255),
             T.Normalize(mean=cfg.data.pixel_mean, std=cfg.data.pixel_std)
         ])
     else:
@@ -21,7 +20,6 @@ def get_trm(cfg, is_train=True):
             T.ToPILImage(),
             T.Resize(cfg.data.image_size),
             T.ToTensor(),
-            T.Normalize(mean=0, std=255),
             T.Normalize(mean=cfg.data.pixel_mean, std=cfg.data.pixel_std)
         ])
     return transform
@@ -44,7 +42,7 @@ class ImageDataset(Dataset):
         if self.transform is not None:
             img = self.transform(img)
 
-        return img, label
+        return img, label, img_path
 
 
 def _process_anno(path):
@@ -89,9 +87,6 @@ def _make_test_loader(cfg):
 
 
 def make_dataloader(cfg, type):
-    assert type in ['train', 'test', 'validation'], 'Dataset type \'{}\' not supported. Must be in {}' \
-        .format(type, ['train', 'test', 'validation'])
-
     if type == 'train':
         return _make_train_loader(cfg)
     elif type == 'validation':

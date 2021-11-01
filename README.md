@@ -34,10 +34,12 @@ Then we warp the mask image using this transformation.
 Finally, we put the warped mask image on top of the face image.
 
 example correspondence (pattern_1):
-![pattern_1](images/right.png)
+
+<img src="images/right.png" width="400" height="200" />
 
 example correspondence (pattern_2):
-![pattern_2](images/wrong.png)
+
+<img src="images/wrong.png" width="400" height="200" />
 
 correctly masked face image examples:
 ![](images/right_examples.jpg)
@@ -62,9 +64,12 @@ We set batch_size to 128 and train the network for 200 epochs.
 During training, the highest accuracy on the validation set is 99.31%.
 
 loss curve during training:
-![](images/loss_curve.PNG)
+
+<img src="images/loss_curve.PNG" width="600"/>
+
 accuracy curve during training:
-![](images/accuracy_curve.PNG)
+
+<img src="images/accuracy_curve.PNG" width="600"/>
 
 The accuracy on the test set is 98.75%.
 This is a binary classification problem. 
